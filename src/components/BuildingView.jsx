@@ -1,5 +1,5 @@
 import React from "react";
-export  function BuildingView({
+export function BuildingView({
     floors,
     visibleFloor,
     floorCalls,
@@ -11,7 +11,7 @@ export  function BuildingView({
           const floorNum = floors - 1 - i;
           return (
             <div className="floor" key={floorNum}>
-              <div className="floor-label">{floorNum == 0 ? "Lobby" : `${floorNum} Floor` }</div>
+              <div className="floor-label">{`${floorNum.toOrdinal()}`} {floorNum>0 && "Floor"}</div>
               <div className="current-floor">{visibleFloor} </div>
               <button
                 className={`call-btn ${

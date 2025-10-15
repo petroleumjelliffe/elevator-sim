@@ -8,30 +8,43 @@ export function CarView({
     doorRightRef,
     queue,
 }) {
+    // Create 2-column button layout: lowest floors at bottom, ascending left to right, bottom to top
+    const buttonRows = [];
+    for (let i = 0; i < floors; i += 2) {
+      buttonRows.push([i, i + 1 < floors ? i + 1 : null]);
+    }
+    buttonRows.reverse(); // Bottom to top
+
     return (
-
       <div className="car-view">
-        <h3>Inside Car</h3>
-            <div className="current-floor">{visibleFloor} </div>
+        <div className="current-floor-display">{visibleFloor}</div>
 
-        <div className="panel">
-          {[...Array(floors)].map((_, i) => (
-            <button
-              key={i}
-              className={`floor-btn ${
-                queue.includes(i) ? "active" : ""
-              }`}
-              onClick={() => handleCall(i)}
-            >
-              {i}
-            </button>
-          ))}
-        </div>
-        <div className="indicator"> 
-          Current Floor: {visibleFloor}</div>
-        <div className="door-preview">
-          <div className="door left" ref={doorLeftRef}></div>
-          <div className="door right" ref={doorRightRef}></div>
+        <div className="car-interior-layout">
+          <div className="door-preview">
+            {visibleFloor == 0 ? "Lobby" : `${visibleFloor.toOrdinal()} Floor` }
+            <div className="door left" ref={doorLeftRef}></div>
+            <div className="door right" ref={doorRightRef}></div>
+          </div>
+
+          <div className="panel">
+            {buttonRows.map((row, rowIdx) => (
+              <div key={rowIdx} className="panel-row">
+                {row.map((floorNum) =>
+                  floorNum !== null ? (
+                    <button
+                      key={floorNum}
+                      className={`floor-btn ${queue.includes(floorNum) ? "active" : ""}`}
+                      onClick={() => handleCall(floorNum)}
+                    >
+                      {(floorNum.toInitial())}
+                    </button>
+                  ) : (
+                    <div key="empty" className="floor-btn-spacer"></div>
+                  )
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
