@@ -8,7 +8,7 @@ import { CarView } from "./components/CarView.jsx";
 
 const FLOORS = 5;
 const FLOOR_HEIGHT = 120; // px per floor
-const MOVE_SPEED = 0.4; // px per frame (~24fps → ~48px/sec)
+const MOVE_SPEED = 0.8; // px per frame (~24fps → ~48px/sec)
 const DOOR_TIME = 1200; // ms door open duration
 
 export default function ElevatorSim() {
@@ -28,9 +28,10 @@ export default function ElevatorSim() {
 
   // 🎮 Handle floor call
   const handleCall = (floor) => {
+    // Ignore if already queued or current
     if (!queue.includes(floor) && floor !== currentFloor) {
-      setQueue((q) => [...q, floor]);
-      setFloorCalls((calls) => {
+      setQueue((q) => [...q, floor]); // Add to queue
+      setFloorCalls((calls) => { // Mark call button active
         const updated = [...calls];
         updated[floor] = true;
         return updated;
